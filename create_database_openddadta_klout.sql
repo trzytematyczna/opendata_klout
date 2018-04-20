@@ -13,8 +13,8 @@ create table if not exists fb(
     user_id bigint NOT NULL,
     actor_id bigint NOT NULL,
     post_id bigint DEFAULT NULL,
-    post_timestamp integer DEFAULT NULL,
-    action_timestamp integer DEFAULT NULL,
+    post_timestamp bigint DEFAULT NULL,
+    action_timestamp bigint DEFAULT NULL,
     user_timezone varchar(200) DEFAULT NULL,
     day_date DATE DEFAULT NULL
   );
