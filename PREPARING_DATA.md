@@ -16,7 +16,14 @@ Liczba komentarzy na jednego posta
 select post_id, count(action_timestamp) from fb group by post_id  
 having count(action_timestamp) >1 order by count(action_timestamp) desc;
 
-Liczba komentarzy od tego samego uzytkownika na jednego posta
+Liczba komentarzy >1 od tego samego uzytkownika na jednego posta
 select post_id, actor_id, count(action_timestamp) from fb group by post_id, actor_id
 having count(action_timestamp) >1 order by count(action_timestamp) desc;
+
+
+Liczba komentarzy od tego samego uzytkownika na jednego posta
+Copy (select post_id, actor_id, count(action_timestamp) from fb group by post_id, actor_id
+order by count(action_timestamp) desc)
+To '/Users/admin/Desktop/data/opendata_klout/csv/actors_comments_per_post.csv' With CSV DELIMITER ',';
+
 
