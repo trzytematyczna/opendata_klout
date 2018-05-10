@@ -21,9 +21,23 @@ select post_id, actor_id, count(action_timestamp) from fb group by post_id, acto
 having count(action_timestamp) >1 order by count(action_timestamp) desc;
 
 
-Liczba komentarzy od tego samego uzytkownika na jednego posta
-Copy (select post_id, actor_id, count(action_timestamp) from fb group by post_id, actor_id
+Liczba komentarzy od tego samego uzytkownika na jednego posta danego usera
+Copy (select user_id, post_id, actor_id, count(action_timestamp) from fb group by user_id, post_id, actor_id
 order by count(action_timestamp) desc)
 To '/Users/admin/Desktop/data/opendata_klout/csv/actors_comments_per_post.csv' With CSV DELIMITER ',';
+
+Liczba unikalnych uzytkownikow ktorzy robili reakcje na jednego posta danego usera
+copy (
+select user_id, post_id, count(distinct actor_id) from fb group by user_id, post_id
+order by count(distinct actor_id) desc
+) To '/Users/admin/Desktop/data/opendata_klout/csv/distinct_actors_per_post.csv' With CSV DELIMITER ',';
+
+
+Liczba aktywnych uzytkownikow dla danego uzytkownika w calej bazie
+copy (
+select user_id, count(distinct actor_id) from fb group by user_id
+order by count(distinct actor_id) desc
+) To '/Users/admin/Desktop/data/opendata_klout/csv/distinct_actors_generally.csv' With CSV DELIMITER ',';
+
 
 
