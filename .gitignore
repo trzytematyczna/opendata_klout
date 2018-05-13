@@ -1,5 +1,6 @@
 #csv files - too big for github
 /csv/
+data/
 
 # History files
 .Rhistory
