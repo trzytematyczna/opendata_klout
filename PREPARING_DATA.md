@@ -87,3 +87,10 @@ select sum(user_reacted_count) from pri where user_id = 4802661848546193750;
 
 ```
 
+csv1 post_id: post_id post_timestamp
+csv2 post_id action_timestamp
+```sql
+COPY fb(post_id, post_timestamp) TO '/Users/admin/Desktop/data/opendata_klout/csv/post_id_post_timestamp.csv' DELIMITER ',' CSV HEADER;
+COPY fb(post_id, action_timestamp) TO '/Users/admin/Desktop/data/opendata_klout/csv/post_id_action_timestamp.csv' DELIMITER ',' CSV HEADER;
+
+```
