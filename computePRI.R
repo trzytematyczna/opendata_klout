@@ -1,7 +1,7 @@
 library(dplyr)
 
-pri <- read.csv("data/pri.csv", header = T)
-spread <- read.csv("data/spread.csv", header = T)
+pri <- read.csv("data/pri.csv", header = T, stringsAsFactors = T, colClasses = c("factor", "factor", rep("numeric", 2)))
+spread <- read.csv("data/spread.csv", header = T, stringsAsFactors = T, colClasses = c("factor", "numeric"))
 spread$user_id <- as.factor(spread$user_id)
 spread <- spread[order(spread$user_id), ]
 
