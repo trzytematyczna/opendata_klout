@@ -1,0 +1,20 @@
+source("influence.plotEfficiency.R")
+source("influence.commentTimeline.R")
+
+## Some posts and their properties (time window 7d)
+# 1) 7668600250826378255 -- classic slide down on all counts
+# 2) 6252890798757017754 -- constant posts and comments, increasing spread, but droping pri
+# 3) 1540784020687880833  -- more posts, but all the rest going down
+# 4) -3000490335411638731 -- balancing!
+# 5) -5562342665076700406 -- all go up!
+user_posts <- top100posts %>% filter(user_id == sample(top100posts$user_id, 1))
+
+# Window settings
+a_day_in_ms <- 1000 * 3600 * 24
+window <- list(
+  start=min(top100posts$post_timestamp), # from when we apply the windows
+  end=max(top100posts$post_timestamp),   # until when we apply the windows
+  size=7 * a_day_in_ms)                  # the size of the applied windows
+
+influence.plotEfficiency(user_posts, window)
+timeline <- influence.commentTimeline(user_posts)

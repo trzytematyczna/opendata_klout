@@ -1,39 +1,53 @@
-#
-# time_window -- in days (1d == 1000 * 3600 * 24 ms)
-#influence.plotEfficiency <- function(user_posts, time_window) {
-  
-  user_posts <- top100posts %>% filter(user_id == "-2172252558949697874")
-  user_posts <- user_posts %>% arrange(post_timestamp)
-  
-  a_day_in_ms <- 1000 * 3600 * 24
-  time_window <- 7 * a_day_in_ms
-  unique_post_ts <- unique(user_posts$post_timestamp)
-  start_ts <- min(unique_post_ts)
-  end_ts <- max(unique_post_ts)
-  diff_ts <- end_ts - start_ts
-  num_time_window <- round(diff_ts / time_window)
-  # assing time window factors to each post (TODO: do this for the whole data before!)
-  #user_posts$time_window <- 17;#rep(factor("tw1"), nrow(user_posts))
+library(dplyr)
+
+influence.plotEfficiency <- function(user_posts, window) {
+  diff_ts <- window$end - window$start
+  num_time_window <- round(diff_ts / window$size) - 1 # skip the last "window" (usaully not a full window)
+  # assing time window factors to each post
   for (tw in 0:num_time_window) {
-    tw_end <- start_ts + tw * time_window
+    tw_end <- window$start + tw * window$size
+    # post time window
     user_posts$time_window <- ifelse(user_posts$post_timestamp >= tw_end, tw+1, user_posts$time_window)
+    # comment time window
+    user_posts$time_window_comment <- ifelse(user_posts$action_timestamp >= tw_end, tw+1, user_posts$time_window_comment)
   }
-  #user_posts$time_window <- as.factor(paste(as.character("tw"), user_posts$time_window, sep=""))
+
+  post_count <- user_posts %>%
+    group_by(time_window) %>%
+    summarise(n = length(unique(post_id)))
   
+  comment_count <- user_posts %>%
+    group_by(time_window) %>%
+    count()
   
-  plot(unique_post_ts, rep(1, length(unique_post_ts)))
-  abline(v = c(start_ts + 1:(num_time_window-1)*time_window), col = "red", lty=2)
+  pri_tw <- user_posts %>%
+    group_by(time_window_comment) %>%
+    summarise(pri = length(actor_id) / length(unique(actor_id)))
+  # pri_tw <- user_posts %>%
+  #   group_by(post_id,time_window_comment) %>%
+  #   summarise(pri = length(actor_id) / length(unique(actor_id))) %>%
+  #   group_by(time_window_comment) %>%
+  #   summarise(pri = mean(pri))
   
-  par(mfrow=c(1, 2))
-  comment_count <- user_posts %>% group_by(time_window) %>% count()
-  plot(comment_count$time_window, comment_count$n, type="b", lty=2, ylim=c(0, max(comment_count$n)*1.1))
-  pl <- lm(n~time_window, comment_count)
-  abline(pl)
+  spread_tw <- user_posts %>%
+    group_by(time_window) %>%
+    summarise(n = length(unique(actor_id)))
   
-  just_posts <- user_posts[!duplicated(user_posts$post_id), ]
-  post_count <- just_posts %>% group_by(time_window) %>% count()
-  plot(post_count$time_window, post_count$n, lty=2, type="b")
-  pl <- lm(n~time_window, post_count)
-  abline(pl)
+  # plot data
+  par(mfrow=c(1, 4))
+  plot(post_count$time_window, post_count$n, lty=2, type="b",
+       main = "Post count", xlab = "Window (timeline)", ylab="#posts", bty="n")
+  abline(lm(n ~ time_window, post_count), col="red")
   
-#}
+  plot(comment_count$time_window, comment_count$n, type="b", lty=2,
+       main = "Comment count", xlab = "Window (timeline)", ylab="#comment", bty="n")
+  abline(lm(n ~ time_window, comment_count), col="red")
+  
+  plot(pri_tw$time_window_comment, pri_tw$pri, type="b", lty=2, ,
+       main = "PRI value (impact)", xlab = "Window (timeline)", ylab="Post-reaction intensity (PRI)", bty="n")
+  abline(lm(pri~time_window_comment, pri_tw), col="red")
+  
+  plot(spread_tw$time_window, spread_tw$n, type="b", lty=2,
+       main = "Spread value", xlab = "Window (timeline)", ylab="Spread (unique audience)", bty="n")
+  abline(lm(n ~ time_window, spread_tw), col="red")
+}
