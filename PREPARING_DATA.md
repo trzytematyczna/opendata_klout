@@ -94,3 +94,56 @@ COPY fb(post_id, post_timestamp) TO '/Users/admin/Desktop/data/opendata_klout/cs
 COPY fb(post_id, action_timestamp) TO '/Users/admin/Desktop/data/opendata_klout/csv/post_id_action_timestamp.csv' DELIMITER ',' CSV HEADER;
 
 ```
+
+```sql
+create table top100 (
+	user_id bigint,
+	num_posts integer default null,
+	active_users integer default null,
+	num_comments integer default null,
+	score real default null
+);
+
+COPY top100(user_id,num_posts,active_users,num_comments,score) FROM '/Users/admin/Desktop/data/opendata_klout/data/top100.csv' DELIMITER ',' CSV HEADER;
+
+copy (select * from fb where user_id in (select user_id from top100)) To '/Users/admin/Desktop/data/opendata_klout/data/top100info.csv'   DELIMITER ',' CSV HEADER;
+
+```
+
+```sql
+COPY (select user_id,actor_id,post_id,post_timestamp,action_timestamp from fb where user_id in (select user_id from usercount) )TO '/Users/admin/Desktop/fb.csv' DELIMITER ',' CSV HEADER;
+
+
+
+create table usercount as (select user_id, count(user_id) from fb group by user_id)
+		
+delete from usercount where count <100;
+
+create table user_comment_post as (select user_id, count(user_id) as c_uid, count(distinct post_id) as c_pid from fb group by user_id);
+
+delete from user_comment_post where c_uid <500;
+delete from user_comment_post where c_pid <15;
+
+
+COPY (select user_id,actor_id,post_id,post_timestamp,action_timestamp from fb where user_id in (select user_id from user_comment_post) )TO '/Users/admin/Desktop/user_comment_post500.csv' DELIMITER ',' CSV HEADER;
+
+
+create table user_comment_post1k as (select * from user_comment_post);
+delete from user_comment_post1k where c_uid <1000;
+
+COPY (select user_id,actor_id,post_id,post_timestamp,action_timestamp from fb where user_id in (select user_id from user_comment_post1k) )TO '/Users/admin/Desktop/user_comment_post1k.csv' DELIMITER ',' CSV HEADER;
+
+create table user_comment_post2k as (select * from user_comment_post);
+delete from user_comment_post2k where c_uid <2000;
+
+COPY (select user_id,actor_id,post_id,post_timestamp,action_timestamp from fb where user_id in (select user_id from user_comment_post2k) )TO '/Users/admin/Desktop/user_comment_post2k.csv' DELIMITER ',' CSV HEADER;
+
+
+create table user_comment_post4k as (select * from user_comment_post);
+delete from user_comment_post4k where c_uid <4000;
+
+COPY (select user_id,actor_id,post_id,post_timestamp,action_timestamp from fb where user_id in (select user_id from user_comment_post4k) )TO '/Users/admin/Desktop/user_comment_post4k.csv' DELIMITER ',' CSV HEADER;
+
+```
+
+
