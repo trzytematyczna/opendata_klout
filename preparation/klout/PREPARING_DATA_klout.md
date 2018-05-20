@@ -7,6 +7,11 @@ create_database_openddadta_klouts.sql
 ```sql
 COPY fb(user_id,actor_id,post_id,post_timestamp,action_timestamp) TO '/Users/admin/Desktop/fb.csv' DELIMITER ',' CSV HEADER;
 
+select count(distinct user_id) from fb; action users
+select count(distinct actor_id) from fb; reaction users
+select count(distinct post_id) from fb; action no
+select count(distinct action_timestamp) from fb; comment no
+
 ```
 
       user_id       |       actor_id       |       post_id       | post_timestamp | action_timestamp |     user_timezone     | day_date 
