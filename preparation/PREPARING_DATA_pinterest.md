@@ -6,17 +6,16 @@ create_database_pinterest.sql
 
 ```sql
 create table joined_table as (
-select 	user_id, post_id, actor_id, 1 as repin from repins);
+select 	user_id, post_id, actor_id, 1 as repins, 0 as likes from repins);
 
-insert into joined_table (user_id, post_id, actor_id, repin) select user_id, post_id, actor_id, 0 from likes;
+insert into joined_table (user_id, post_id, actor_id, repins, likes) select user_id, post_id, actor_id, 0, 1 from likes;
 
-
-#tyle jest wszystkich 
-select count(*) as all_reactions from joined_table;
 
 create table summary_user_likes_repins as(
-select user_id, post_id, sum(repin) as repins_no, 56419939-sum(repin) as likes_no, count(distinct actor_id) from joined_table group by user_id, post_id
+select user_id, post_id, sum(repins) as repins_no, sum(likes) as likes_no, count(distinct actor_id) from joined_table group by user_id, post_id
 );
+
+select user_id, post_id, sum(repin) as repins_no, count(repin)-sum(repin) as likes_no, count(distinct actor_id) from joined_table group by user_id, post_id
 
 COPY (select * from summary_user_likes_repins order by count desc) TO '/Users/admin/Desktop/data/opendata_klout/data/pinterest/summary_user_likes_repins.csv' DELIMITER ',' CSV HEADER;
 
