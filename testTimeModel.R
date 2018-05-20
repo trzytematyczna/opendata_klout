@@ -21,11 +21,11 @@ window <- list(
 influence.plotEfficiency(user_posts, window)
 #timeline <- influence.commentTimeline(user_posts)
 
-window <- list(
-  start=min(top100posts$post_timestamp), # from when we apply the windows
-  end=max(top100posts$post_timestamp),   # until when we apply the windows
-  size=7 * a_day_in_ms,                  # the size of the applied windows
-  step=1 * a_day_in_ms)                  # moving window step
-
-## TODO: make PRI absolute from size of the time window?
-influence.plotEfficiency2(user_posts, window)
+# window <- list(
+#   start=min(top100posts$post_timestamp), # from when we apply the windows
+#   end=max(top100posts$post_timestamp),   # until when we apply the windows
+#   size=7 * a_day_in_ms,                  # the size of the applied windows
+#   step=1 * a_day_in_ms)                  # moving window step
+# 
+# ## TODO: make PRI absolute from size of the time window?
+# influence.plotEfficiency2(user_posts, window)
