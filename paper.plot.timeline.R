@@ -1,4 +1,4 @@
-#load(file = "data/postCommentTimeline.RData")
+load(file = "data/postCommentTimeline.RData")
 plotFilename <- "paper-plots/timeline.pdf"
 pdf(plotFilename, width = 8.27, height = 5.83)
 hist(timeline$medianUserComment, breaks = 100,
