@@ -46,8 +46,8 @@ update summary_post_counts_per_user set AE_numerator=i.AE_numerator from (select
 
 
 create table AE_spread as (
-	select user_id, AE_numerator::real/posts_no_AE_denominator as engagement, distinct_actors_no_spread  as spread from AE_spread order by posts_no_AE_denominator,distinct_actors_no_spread desc
-)
+	select user_id, AE_numerator::real/posts_no_AE_denominator as engagement, distinct_actors_no_spread  as spread from summary_post_counts_per_user order by posts_no_AE_denominator,distinct_actors_no_spread desc
+);
 
 COPY (select * from AE_spread) TO '/Users/admin/Desktop/data/opendata_klout/data/pinterest/user_id_engagement_spread.csv' DELIMITER ',' CSV HEADER;
 
