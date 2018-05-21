@@ -2,7 +2,7 @@ load("data/user_data.RData")
 
 library(radarchart)
 
-top <- user_data[2:6, ]
+top <- user_data[1:3, ]
 
 # normalize to [0, 1]
 top$active_users <- top$active_users / max(top$active_users)
