@@ -10,7 +10,7 @@ top$post_number <- top$post_number / max(top$post_number)
 top$pri <- top$pri / max(top$pri)
 top$influence <- top$influence / max(top$influence)
 
-labs <- c("Active users", "Post number", "PRI", "Influence")
+labs <- c("Spread", "Post number", "Engagement", "Influence")
 
 scores <- list()
 for (i in 1:nrow(top)) {
