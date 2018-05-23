@@ -58,6 +58,31 @@ copy (select * from spread) To '/Users/admin/Desktop/data/opendata_klout/csv/spr
 copy (select * from pri) To '/Users/admin/Desktop/data/opendata_klout/csv/pri.csv'   DELIMITER ',' CSV HEADER;
 
 ```
+
+top 10 users: -6751148707665161418,-7292596198232829317,-7196196742387120621,6126008579091587979,5037302820543493971,-5946840442054049010,-7316297207548296349,-6363794471223645739,5996420768932340910,8790498288883255760
+
+```sql
+create table top10_pri_values as(
+	select user_id, post_id, reaction_sum, user_reacted_count, reaction_sum::real/user_reacted_count as pri_val from pri where user_id in (-6751148707665161418,-7292596198232829317,-7196196742387120621,6126008579091587979,5037302820543493971,-5946840442054049010,-7316297207548296349,-6363794471223645739,5996420768932340910,8790498288883255760)
+);
+
+create table top10_engagement_values as(
+	select user_id, sum(pri_val) as AE_numerator, count(post_id) as AE_denominator from top10_pri_values group by user_id
+);
+alter table top10_engagement_values add column engagement real;
+
+update top10_engagement_values set engagement=i.AE_numerator::real/i.AE_denominator from (select user_id, AE_numerator, AE_denominator from top10_engagement_values) i where i.user_id = top10_engagement_values.user_id;
+
+copy (select user_id, engagement from top10_engagement_values) To '/Users/admin/Desktop/data/opendata_klout/data/klout/top10_engagement.csv'  DELIMITER ',' CSV HEADER;
+```
+
+
+users for trends : -1576516305212639441
+-5946840442054049010
+
+```sql
+
+```
 Czy jest wiecej aktywnych userow niz zliczonych komentarzy (test bledu bazy):
 
 ```sql

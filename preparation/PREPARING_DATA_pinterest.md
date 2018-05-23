@@ -94,3 +94,12 @@ create table AE_spread_weight2 as (
 
 COPY (select * from AE_spread_weight2) TO '/Users/admin/Desktop/data/opendata_klout/data/pinterest/user_id_engagement_spread_weight2.csv' DELIMITER ',' CSV HEADER;
 ```
+
+
+```sql
+create table temp as(
+select user_id, post_id, actor_id, sum(repins) as repins_no, sum(likes) as likes_no, CASE when sum(repins)*sum(likes)>0 Then 1 else 0 end as combo from joined_table where user_id in (2777,20703,2367,5656,4000,1731,5074,820,4968,993)  group by user_id,  post_id, actor_id 
+);
+
+COPY (select user_id, sum(repins_no) as repins, sum(likes_no) as likes, sum(combo) as combo from temp group by user_id) to '/Users/admin/Desktop/data/opendata_klout/data/pinterest/top10_pinterest_reaction_info.csv' DELIMITER ',' CSV HEADER;
+```
