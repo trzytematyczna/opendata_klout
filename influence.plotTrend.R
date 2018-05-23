@@ -28,7 +28,7 @@ influence.plotTrend <- function(user_posts, window) {
     group_by(time_window) %>%
     summarise(n = length(unique(actor_id)))
   
-  influence_tw <- data.frame(time_window=spread_tw$time_window, n=(spread_tw$n * pri_tw$pri^3 * exp(1/post_count$n)))
+  influence_tw <- data.frame(time_window=spread_tw$time_window, n=(spread_tw$n * pri_tw$pri * exp(1/post_count$n)))
 
   # plot data
   par(mfrow=c(3, 2))
