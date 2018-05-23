@@ -28,8 +28,10 @@ influence.plotTrend <- function(user_posts, window) {
     group_by(time_window) %>%
     summarise(n = length(unique(actor_id)))
   
+  influence_tw <- data.frame(time_window=spread_tw$time_window, n=(spread_tw$n * pri_tw$pri^3 * exp(1/post_count$n)))
+
   # plot data
-  par(mfrow=c(2, 2))
+  par(mfrow=c(3, 2))
   plot(post_count$time_window, post_count$n, lty=1, type="b",
        main = "Post count", xlab = "Window (timeline)", ylab="#posts",
        bty="n", xlim=c(0, num_time_window), pch=2)
@@ -56,5 +58,12 @@ influence.plotTrend <- function(user_posts, window) {
        bty="n", xlim=c(0, num_time_window), pch=2)
   if (nrow(spread_tw) > 1) {
     abline(lm(n ~ time_window, spread_tw), col="red", lty=2)
+  }
+  
+  plot(influence_tw$time_window, influence_tw$n, type="b", lty=1,
+       main = "Influence value", xlab = "Window (timeline)", ylab="Influence",
+       bty="n", xlim=c(0, num_time_window), pch=2)
+  if (nrow(influence_tw) > 1) {
+   # abline(lm(n ~ time_window, influence_tw), col="red", lty=2)
   }
 }
