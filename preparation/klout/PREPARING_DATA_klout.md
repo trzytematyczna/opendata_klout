@@ -176,4 +176,26 @@ COPY (select user_id,actor_id,post_id,post_timestamp,action_timestamp from fb wh
 
 ```
 
+```sql
+#engagement
 
+
+create table pri_value as(
+	select user_id, post_id, reaction_sum::real/user_reacted_count as pri_value 
+	from pri
+);
+
+create table engagement as(
+	select user_id, count(distinct post_id) as engag_denominator, sum(pri_value) as engag_numerator
+	from pri_value group by user_id
+);
+
+create table engagement_value as(
+	select user_id, engag_denominator::real/engag_numerator as engagement_value
+	from engagement
+);
+
+COPY (select * from engagement)TO '/Users/admin/Desktop/data/opendata_klout/data/klout/engagement.csv' DELIMITER ',' CSV HEADER;
+
+
+````
