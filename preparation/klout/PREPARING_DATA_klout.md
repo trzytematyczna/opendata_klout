@@ -194,8 +194,9 @@ create table engagement_value as(
 	select user_id, engag_denominator::real/engag_numerator as engagement_value
 	from engagement
 );
+ 
+COPY (select * from engagement) TO '/Users/admin/Desktop/data/opendata_klout/klout_engagement/engagement.csv' DELIMITER ',' CSV HEADER;
 
-COPY (select * from engagement)TO '/Users/admin/Desktop/data/opendata_klout/data/klout/engagement.csv' DELIMITER ',' CSV HEADER;
-
+COPY (select user_id, engag_denominator from engagement) TO '/Users/admin/Desktop/data/opendata_klout/klout_engagement/fc_A.csv' DELIMITER ',' CSV HEADER;
 
 ````
