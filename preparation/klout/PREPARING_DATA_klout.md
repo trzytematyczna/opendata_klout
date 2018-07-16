@@ -191,12 +191,14 @@ create table engagement as(
 );
 
 create table engagement_value as(
-	select user_id, engag_denominator::real/engag_numerator as engagement_value
+	select user_id, engag_numerator::real/engag_denominator as engagement_value
 	from engagement
 );
  
-COPY (select * from engagement) TO '/Users/admin/Desktop/data/opendata_klout/klout_engagement/engagement.csv' DELIMITER ',' CSV HEADER;
 
-COPY (select user_id, engag_denominator from engagement) TO '/Users/admin/Desktop/data/opendata_klout/klout_engagement/fc_A.csv' DELIMITER ',' CSV HEADER;
+COPY (select * from engagement_value) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/engagement.csv' DELIMITER ',' CSV HEADER;
+
+COPY (select user_id, engag_denominator from engagement) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/fc_A.csv' DELIMITER ',' CSV HEADER;
+COPY (select engagement_value.user_id, engagement_value, active_users as spread from engagement_value join spread on engagement_value.user_id = spread.user_id) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/engagement_spread.csv' DELIMITER ',' CSV HEADER;
 
 ````
