@@ -175,7 +175,7 @@ delete from user_comment_post4k where c_uid <4000;
 COPY (select user_id,actor_id,post_id,post_timestamp,action_timestamp from fb where user_id in (select user_id from user_comment_post4k) )TO '/Users/admin/Desktop/user_comment_post4k.csv' DELIMITER ',' CSV HEADER;
 
 ```
-
+Microinfluencers 
 ```sql
 #engagement
 

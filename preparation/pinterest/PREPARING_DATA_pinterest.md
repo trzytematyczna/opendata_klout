@@ -53,8 +53,9 @@ COPY (select * from AE_spread) TO '/Users/admin/Desktop/data/opendata_klout/data
 
 ```
 
+Microinfluencers
 ```sql
-COPY (select user_id, posts_no_AE_denominator from summary_post_counts_per_user) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/pinterest/fc_A.csv' DELIMITER ',' CSV HEADER;
+COPY (select user_id, posts_no_AE_denominator as A from summary_post_counts_per_user) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/pinterest/fc_A.csv' DELIMITER ',' CSV HEADER;
 ```
 
 
