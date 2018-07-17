@@ -201,4 +201,15 @@ COPY (select * from engagement_value) TO '/Users/admin/Desktop/data/opendata_klo
 COPY (select user_id, engag_denominator from engagement) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/fc_A.csv' DELIMITER ',' CSV HEADER;
 COPY (select engagement_value.user_id, engagement_value, active_users as spread from engagement_value join spread on engagement_value.user_id = spread.user_id) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/engagement_spread.csv' DELIMITER ',' CSV HEADER;
 
+
+### pagerank graph preparation
+
+### uid = user that got the comment --> influence is from this user
+### actor_id= user that written the comment ---> the influenced user
+### count action_timestamp= number of comments from aid to uid --> weight of the inf
+
+COPY (select user_id as infFrom, actor_id as infTo, count(action_timestamp) as weight from fb group by user_id, actor_id) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/pagerank_data.csv' DELIMITER ',' CSV HEADER;
+
+
+
 ````
