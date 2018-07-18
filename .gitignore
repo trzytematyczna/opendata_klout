@@ -1,7 +1,7 @@
 #csv files - too big for github
 /csv/
 /data/
-
+/microinfluencers/klout/data/
 # History files
 .Rhistory
 .Rapp.history
