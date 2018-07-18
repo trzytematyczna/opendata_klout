@@ -60,6 +60,9 @@ COPY (select user_id, posts_no_AE_denominator as A from summary_post_counts_per_
 
 COPY (select actor_id as efrom, user_id as eto, sum(repins_no)+sum(likes_no) as weight from user_actor_likes_repins group by user_id, actor_id) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/pinterest/pagerank_data.csv' DELIMITER ',' CSV HEADER;
 
+COPY (select user_id from AE_spread where spread > 100 and spread <500 ) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/pinterest/trimming_microinfluencers/microinfluencersList_100-500.csv' DELIMITER ',' CSV HEADER;
+
+
 ```
 
 

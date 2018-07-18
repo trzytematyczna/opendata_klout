@@ -207,6 +207,6 @@ COPY (select engagement_value.user_id, engagement_value, active_users as spread 
 
 COPY (select actor_id as efrom, user_id as eto, count(action_timestamp) as weight from fb group by user_id, actor_id) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/pagerank_data.csv' DELIMITER ',' CSV HEADER;
 
-COPY (select user_id from spread where active_users > 100 and active_users <500 ) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/microinfluencers_100-500.csv' DELIMITER ',' CSV HEADER;
+COPY (select user_id from spread where active_users > 100 and active_users <500 ) TO '/Users/admin/Desktop/data/opendata_klout/microinfluencers/klout/microinfluencersList_100-500.csv' DELIMITER ',' CSV HEADER;
 
 ````
