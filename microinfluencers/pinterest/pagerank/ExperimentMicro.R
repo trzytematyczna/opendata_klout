@@ -11,5 +11,8 @@ g <- graph(directed = TRUE, edges = as.character(t(globalInfluence[,1:2])))
 
 pr_weight <- page_rank(g, weights = globalInfluence$weight)
 pr_weight_df <- data.frame(user_id=as.character(names(pr_weight$vector)), pr_value=unname(pr_weight$vector))
+
+mutate(pr_normalised = (pr_value-min(pr_value))/(max(pr_value)-min(pr_value)))
+
 pr_weight_df_ordered <- pr_weight_df%>%arrange(desc(pr_value))
 write.csv(pr_weight_df_ordered, row.names = FALSE, quote = FALSE, file = "pagerank_calculated/pagerank_weighted_results.csv")
