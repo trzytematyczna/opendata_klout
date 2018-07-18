@@ -21,8 +21,8 @@ arim_vs_wpr <- merge(wpr, arim)
 arim_vs_wpr$user_id <-format(arim_vs_wpr$user_id, scientific = FALSE) 
 arim_vs_wpr <- arim_vs_wpr%>%arrange(desc(pr_value))
 
-write.csv(arim_vs_wpr, quote = FALSE, file = "microinfluencers_100-500_pr_order.csv")
+write.csv(arim_vs_wpr, row.names = FALSE, quote = FALSE, file = "microinfluencers_100-500_pr_order.csv")
 
 arim_vs_wpr <- arim_vs_wpr%>%arrange(desc(influence))
-write.csv(arim_vs_wpr, quote = FALSE, file = "microinfluencers_100-500_arim_order.csv")
+write.csv(arim_vs_wpr, row.names = FALSE, quote = FALSE, file = "microinfluencers_100-500_arim_order.csv")
 
