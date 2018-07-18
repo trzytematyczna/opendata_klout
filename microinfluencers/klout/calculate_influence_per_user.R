@@ -9,30 +9,26 @@ fc <- read.csv("fc_A.csv",
                stringsAsFactors = T,
                colClasses = c("factor", "numeric"))
 
-# Compute 
+# Compute microinfluencers with spread between 100 and 500 
 computed_influence <- engagement %>%
   mutate(influence = engagement_value * exp(1/fc$engag_denominator)) %>%
-  filter(spread > 100) %>%
+  filter(spread > 100 & spread < 500) %>%
   arrange(desc(influence))
 
 # Save users' influence ordered by the influence
 write.csv(computed_influence %>% select(user_id, spread, influence),
-          "result_by_influence.csv",
-          row.names = F,
-          quote = F)
-# Save users' influence ordered by user's audience (spread)
-write.csv(computed_influence %>% select(user_id, spread, influence) %>% arrange(desc(spread)),
-          "result_by_spread.csv",
+          "result_microinfluencers_spread_100_to_500.csv",
           row.names = F,
           quote = F)
 
-# Compute all
+# Compute microinfluencers with spread between 1000 and 5000
 computed_influence <- engagement %>%
   mutate(influence = engagement_value * exp(1/fc$engag_denominator)) %>%
+  filter(spread > 1000 & spread < 5000) %>%
   arrange(desc(influence))
 
-# Save users' influence ordered by user's audience (spread) for all
-write.csv(computed_influence %>% select(user_id, spread, influence) %>% arrange(desc(spread)),
-          "result_by_spread_all.csv",
+# Save users' influence ordered by the influence
+write.csv(computed_influence %>% select(user_id, spread, influence),
+          "result_microinfluencers_spread_1000_to_5000.csv",
           row.names = F,
           quote = F)
