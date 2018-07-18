@@ -1,4 +1,5 @@
 library(dplyr)
+library(BBmisc)
 
 engagement <- read.csv("engagement_spread.csv",
                        header = T,
@@ -13,10 +14,11 @@ fc <- read.csv("fc_A.csv",
 computed_influence <- engagement %>%
   mutate(influence = engagement_value * exp(1/fc$engag_denominator)) %>%
   filter(spread > 100 & spread < 500) %>%
-  arrange(desc(influence))
+  arrange(desc(influence)) %>%
+  mutate(influence_normalised = (influence-min(influence))/(max(influence)-min(influence)))
 
 # Save users' influence ordered by the influence
-write.csv(computed_influence %>% select(user_id, spread, influence),
+write.csv(computed_influence %>% select(user_id, spread, influence, influence_normalised),
           "result_microinfluencers_spread_100_to_500.csv",
           row.names = F,
           quote = F)
@@ -25,10 +27,11 @@ write.csv(computed_influence %>% select(user_id, spread, influence),
 computed_influence <- engagement %>%
   mutate(influence = engagement_value * exp(1/fc$engag_denominator)) %>%
   filter(spread > 1000 & spread < 5000) %>%
-  arrange(desc(influence))
+  arrange(desc(influence)) %>%
+  mutate(influence_normalised = (influence-min(influence))/(max(influence)-min(influence)))
 
 # Save users' influence ordered by the influence
-write.csv(computed_influence %>% select(user_id, spread, influence),
+write.csv(computed_influence %>% select(user_id, spread, influence, influence_normalised),
           "result_microinfluencers_spread_1000_to_5000.csv",
           row.names = F,
           quote = F)
