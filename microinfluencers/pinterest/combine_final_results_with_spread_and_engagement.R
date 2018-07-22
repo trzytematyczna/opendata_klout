@@ -26,5 +26,12 @@ pr_order$pr_normalized <- round(pr_order$pr_normalized, digits = 6)
 pr_order$influence_normalised <- round(pr_order$influence_normalised, digits = 6)
 pr_order$engagement <- round(pr_order$engagement, digits = 6)
 
+# Order data
+# Order data once again
+arim_order <- arim_order %>%
+  arrange(arim_order)
+pr_order <- pr_order %>%
+  arrange(wpr_order)
+
 write.csv(arim_order, "trimming_microinfluencers/results_final/microinfluencers_100-500_arim_order_full.csv", row.names = F)
 write.csv(pr_order, "trimming_microinfluencers/results_final/microinfluencers_100-500_pr_order_full.csv", row.names = F)

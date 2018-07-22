@@ -1,3 +1,6 @@
+library(gmp)
+library(dplyr)
+
 spread_engagement <- read.csv("arim/engagement_spread.csv")
 
 arim_order <- read.csv("trimming_microinfluencers/results_final/microinfluencers_100-500_arim_order.csv")
@@ -21,6 +24,16 @@ arim_order$engagement_value <- round(arim_order$engagement_value, digits = 6)
 pr_order$pr_normalized <- round(pr_order$pr_normalized, digits = 6)
 pr_order$influence_normalised <- round(pr_order$influence_normalised, digits = 6)
 pr_order$engagement_value <- round(pr_order$engagement_value, digits = 6)
+
+# Shorten the user_id
+arim_order$user_id <- as.character(as.bigz(arim_order$user_id),b=36)
+pr_order$user_id <- as.character(as.bigz(pr_order$user_id),b=36)
+
+# Order data once again
+arim_order <- arim_order %>%
+  arrange(arim_order)
+pr_order <- pr_order %>%
+  arrange(wpr_order)
 
 write.csv(arim_order, "trimming_microinfluencers/results_final/microinfluencers_100-500_arim_order_full.csv", row.names = F)
 write.csv(pr_order, "trimming_microinfluencers/results_final/microinfluencers_100-500_pr_order_full.csv", row.names = F)
